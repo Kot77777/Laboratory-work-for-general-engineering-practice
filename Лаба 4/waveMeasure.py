@@ -2,12 +2,9 @@ import numpy as np
 import waveFunctions as b
 import RPi.GPIO as GPIO
 import time
-import matplotlib.pyplot as plt
-
-def k_finder(v,v0 , h):#эта функция определяет коэф k, определяющий зависимость напряжения от глубины v = v0 + kh
+def k_finder(v,v0 , h):#эта функция определяет коэф k, определяющий зависимость напряжения от глубины v = v0 + k*h
     #ожидаемо, к < 0
     return (v - v0)  / h
-
 def binary(n):  # перевод в двоичную сс
     return [int(i) for i in bin(n)[2:].zfill(8)]
 
@@ -23,7 +20,6 @@ def adc():  # ацп
     return value
 
 GPIO.setmode(GPIO.BCM)
-
 dac = [8, 11, 7, 1, 0, 5, 12, 6]
 comp = 14
 troyka = 13
@@ -31,22 +27,21 @@ GPIO.setup(dac, GPIO.OUT)
 GPIO.setup(troyka, GPIO.OUT, initial=GPIO.HIGH)
 GPIO.setup(comp, GPIO.IN)
 GPIO.setup(21, GPIO.IN)
-listADC = []  # напряжение для графиков
-list_time = []  # моменты времени для графиков
+listADC = []  # напряжение
+list_time = []  # моменты времени снятия напряжения
 
-h = int(input()) # начальная высота жидкости
-v0 = int(input()) #начальное напряжение, ожидаем 3.3 В
-L = int(input()) #длина кювета
+h = int(input(" Введите уровень жидкости")) # начальная высота жидкости. снимаем вручную
+v0 = int(input(" Введите начальное напряжение")) #начальное напряжение, ожидаемо 3.3 или 5 В. снимаем вручную
+L = int(input(" Введите длину от слива до проводника" ))# длина от проводника до слива из кюветы. снимаем вручную
 
-while 1:  # отслеживает открытие крышки
+while 1:  # отслеживает открытие крышки слива
     print(GPIO.input(21), "- состояние закрывашки")
     if GPIO.input(21) == 1:
         timeStart = time.time()
         break
 
 listADC.append(adc() / 256 * 3.3)
-k = k_finder((listADC[0], v0, h))
-
+k = k_finder((listADC[0], v0, h)) #определили k
 list_time.append(time.time() - timeStart)
 
 while 1:  # отслеживает момент, когда волна проходит через проводник, те момент понижения напряжения
@@ -72,20 +67,13 @@ while 1:  # снимает напряжение с ацп и время
         print("конец измерения")
         break
 
-data1_str = [str(item) for item in listADC]
-with open('Voltage on ADC.txt', 'w') as f:
-    f.write("\n".join(data1_str))
-
-Time = np.array(list_time)
-Voltage = np.array(listADC)
-Deep = (Voltage - v0)/k
+Time = np.array(list_time) #создаем массивы numpy с напряжением, времнем и глубиной для построения графиков
+Voltage = np.array(listADC) #создаем массивы numpy с напряжением, времнем и глубиной для построения графиков
+Deep = (Voltage - v0)/k#создаем массивы numpy с напряжением, времнем и глубиной для построения графиков
 
 print("Cкорость распространения волны:", L / delta)
 
+#Далее надо доделать
 plt.plot(Time, Deep, label = "V(t)", color = "red")
 plt.minorticks_on()
 plt.xlabel(r'$x$', fontsize=16)
-
-
-
-
