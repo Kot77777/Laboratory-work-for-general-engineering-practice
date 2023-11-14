@@ -13,9 +13,9 @@ GPIO.setup(21, GPIO.IN)
 listADC = [] #напряжение для графиков
 list_time = [] #моменты времени для графиков
 
-def binary(n):
+def binary(n): #перевод в двоичную сс
     return [int(i) for i in bin(n)[2:].zfill(8)]
-def adc():
+def adc(): #ацп
     value = 0
     for i in range(7, -1, -1):
         value += 2**i
@@ -25,7 +25,7 @@ def adc():
             value -= 2**i
     return value
 
-while 1:
+while 1: #отслеживает открытие крышки
     print(GPIO.input(21), "- состояние закрывашки")
     if GPIO.input(21) == 1:
         timeStart = time.time()
@@ -33,7 +33,7 @@ while 1:
 
 listADC.append(adc()/256*3.3)
 
-while 1:
+while 1: #отслеживает момент, когда волна проходит через проводник, те момент понижения напряжения
     listADC.append(adc()/256*3.3)
     print(adc()/256*3.3, "- напряжение на проводнике")
     if listADC[-1]  - listADC[-2] >= 0.5:
@@ -44,7 +44,7 @@ print("")
 print(delta, "- время до изменения напряжения с момента открытия")
 print("")
 
-while 1:
+while 1: #снимает напряжение с ацп и время и после break-a записывает данные в файл 
     time.sleep(0.005)
     list_for_voltage.append(adc()/256*3.3)
     list_time.append(time.time())
