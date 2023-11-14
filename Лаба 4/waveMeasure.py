@@ -2,7 +2,7 @@ import numpy as np
 import waveFunctions as b
 import RPi.GPIO as GPIO
 import time
-def k_finder(v,v0 , h):#эта функция определяет коэф k, определяющий зависимость напряжения от глубины v = v0 + k*h
+def k_finder(v,v0 , h):  # эта функция определяет коэф k, определяющий зависимость напряжения от глубины v = v0 + k*h
     #ожидаемо, к < 0
     return (v - v0)  / h
 def binary(n):  # перевод в двоичную сс
