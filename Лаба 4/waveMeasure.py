@@ -2,6 +2,8 @@ import numpy as np
 import waveFunctions as b
 import RPi.GPIO as GPIO
 import time
+import matplotlib.pyplot as plt
+
 def k_finder(v,v0 , h):#эта функция определяет коэф k, определяющий зависимость напряжения от глубины v = v0 + kh
     #ожидаемо, к < 0
     return (v - v0)  / h
@@ -34,7 +36,7 @@ list_time = []  # моменты времени для графиков
 
 h = int(input()) # начальная высота жидкости
 v0 = int(input()) #начальное напряжение, ожидаем 3.3 В
-
+L = int(input()) #длина кювета
 
 while 1:  # отслеживает открытие крышки
     print(GPIO.input(21), "- состояние закрывашки")
@@ -70,7 +72,20 @@ while 1:  # снимает напряжение с ацп и время
         print("конец измерения")
         break
 
+data1_str = [str(item) for item in listADC]
+with open('Voltage on ADC.txt', 'w') as f:
+    f.write("\n".join(data1_str))
+
 Time = np.array(list_time)
 Voltage = np.array(listADC)
 Deep = (Voltage - v0)/k
+
+print("Cкорость распространения волны:", L / delta)
+
+plt.plot(Time, Deep, label = "V(t)", color = "red")
+plt.minorticks_on()
+plt.xlabel(r'$x$', fontsize=16)
+
+
+
 
