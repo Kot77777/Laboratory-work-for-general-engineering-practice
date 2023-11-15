@@ -1,9 +1,12 @@
 import numpy as np
 import RPi.GPIO as GPIO
 import time
-def k_finder(v,v0 , h):  # эта функция определяет коэф k, определяющий зависимость напряжения от глубины v = v0 + k*h
-    #ожидаемо, к < 0
-    return (v - v0)  / h
+import matplotlib.pyplot as plt
+
+#def k_finder(v,v0 , h):  # эта функция определяет коэф k, определяющий зависимость напряжения от глубины v = v0 + k*h
+#    #ожидаемо, к < 0
+#    return (v - v0)  / h
+
 def binary(n):  # перевод в двоичную сс
     return [int(i) for i in bin(n)[2:].zfill(8)]
 
@@ -40,7 +43,7 @@ while 1:  # отслеживает открытие крышки слива
         break
 
 listADC.append(adc() / 256 * 3.3)
-k = k_finder((listADC[0], v0, h)) #определили k
+#k = k_finder((listADC[0], v0, h)) #определили k. НУЖНО КАЛИБРОВАТЬ
 list_time.append(time.time() - timeStart)
 
 while 1:  # отслеживает момент, когда волна проходит через проводник, те момент понижения напряжения
