@@ -28,7 +28,8 @@ listADC = []  # напряжение
 list_time = []  # моменты времени снятия напряжения
 #b = #k и b необходимо взять из программы Зависимость згачений ADC от глубины
 #k = #k и b необходимо взять из программы Зависимость згачений ADC от глубины
-L = int(input(" Введите длину от слива до проводника" ))# длина от проводника до слива из кюветы. снимаем вручную
+L = float(input(" Введите длину от слива до проводника" ))# длина от проводника до слива из кюветы. снимаем вручную
+time.sleep(0.5)
 
 while 1:  # отслеживает открытие крышки слива
     print(GPIO.input(21), "- состояние закрывашки")
@@ -36,33 +37,48 @@ while 1:  # отслеживает открытие крышки слива
         timeStart = time.time()
         break
 
-listADC.append(adc() / 256 * 3.3)
+listADC.append(3.24 - adc() / 256 * 3.3)
 list_time.append(time.time() - timeStart)
 
 while 1:  # отслеживает момент, когда волна проходит через проводник, те момент понижения напряжения
-    listADC.append(adc() / 256 * 3.3)
+    time.sleep(0.04)
+    listADC.append(3.24 - adc() / 256 * 3.3)
     list_time.append(time.time() - timeStart)
-    print(adc() / 256 * 3.3, "- напряжение на проводнике")
-    if listADC[-1] - listADC[-2] >= 0.5:
+    print(3.24 - adc() / 256 * 3.3, "- напряжение на проводнике")
+    if abs(listADC[-1] - listADC[-2]) >= 0.1:
         krit_voltage = listADC[-1]
         delta = time.time() - timeStart# для каждого запуска своё значение
         break
-
-while (time.time() - timeStart) <= 15:  # снимает напряжение с ацп и время
-    time.sleep(0.005)
-    listADC.append(adc() / 256 * 3.3)
+time_Start2 = time.time()
+while (time.time() - time_Start2) <= 15:  # снимает напряжение с ацп и время
+    time.sleep(0.1)
+    listADC.append(3.24 - adc() / 256 * 3.3)
     list_time.append(time.time() - timeStart)
-    print(adc() / 256 * 3.3, "<- напряжение на проводнике ----", list_time[-1], "<- время в момент данного измерения")
-
+    print(3.24 - adc() / 256 * 3.3, "<- напряжение на проводнике ----", list_time[-1], "<- время в момент данного измерения")
+    if (listADC[-1] < 0.91):
+        break
 
 Time = np.array(list_time) #создаем массив numpy с времнем для построения графиков
 Voltage = np.array(listADC) #создаем массив numpy с напряжением для построения графиков
-Deep = (Voltage - b)/k #k и b необходимо взять из программы Зависимость згачений ADC от глубины
+Deep = (124.3*Voltage - 112.6) #k и b необходимо взять из программы Зависимость згачений ADC от глубины
 
+print(Voltage)
+print(Time)
+print(Deep)
+print("Время до возмущения", delta)
 print("Cкорость распространения волны:", L / delta)# для каждого запуска своё значение и его надо на бумажечку записать
 print("Критическое напряжение:", krit_voltage)# для каждого запуска своё значение и его надо на бумажечку записать
 
 #Далее надо доделать
-plt.plot(Time, Deep, label = "V(t)", color = "red")
+plt.plot(Time, Deep, label = "h(t)", color = "red")
 plt.minorticks_on()
-plt.xlabel(r'$x$', fontsize=16)
+
+plt.grid(which='major')
+plt.grid(which='minor', linestyle=':')
+plt.tight_layout()
+plt.xlabel('t, c', fontsize=10, fontweight='bold')
+plt.ylabel('h, м', fontsize=10, fontweight='bold')
+
+plt.legend()
+plt.show()
+GPIO.cleanup()
