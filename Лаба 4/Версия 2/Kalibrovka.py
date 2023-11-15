@@ -28,7 +28,7 @@ GPIO.setup(comp, GPIO.IN)
 listADC = []
 time_start = time.time()
 while (time.time() - time_start) <= 10:  #пока не пройдет хотя бы 10 секунд
-    listADC.append(adc() / 256 * 3.3)
-values_ADC_for_20mm_kalib = np.loadtxt("values_ADC_for_20mm_kalib.txt", dtype=float) #Здесь каждый раз необходимо менять значения глубины
-
-
+    listADC.append(3.3 - adc() / 256 * 3.3)
+list_str = [str(item) for item in listADC]
+with open('values_ADC_for_20mm_kalib.txt', 'w') as f:
+    f.write("\n".join(list_str))
