@@ -26,8 +26,6 @@ GPIO.setup(comp, GPIO.IN)
 GPIO.setup(21, GPIO.IN)
 listADC = []  # напряжение
 list_time = []  # моменты времени снятия напряжения
-#b = #k и b необходимо взять из программы Зависимость згачений ADC от глубины
-#k = #k и b необходимо взять из программы Зависимость згачений ADC от глубины
 L = float(input(" Введите длину от слива до проводника" ))# длина от проводника до слива из кюветы. снимаем вручную
 time.sleep(0.5)
 
@@ -69,16 +67,21 @@ print("Время до возмущения", delta)
 print("Cкорость распространения волны:", L / delta)# для каждого запуска своё значение и его надо на бумажечку записать
 print("Критическое напряжение:", krit_voltage)# для каждого запуска своё значение и его надо на бумажечку записать
 
-#Далее надо доделать
 plt.plot(Time, Deep, label = "h(t)", color = "red")
 plt.minorticks_on()
+
+coefs1 = np.polyfit(Time[:Time.index(krit_voltage)], Deep[:len(Time[:Time.index(krit_voltage)])], 1)#создаем коэффициенты
+func1 = np.poly1d(coefs1)#создает функцию по этим коэффициентам
+plt.plot(Time[:Time.index(krit_voltage)], func1(Time[:Time.index(krit_voltage)]), color = '#0d00ff')
+coefs2 = np.polyfit(Time[:Time.index(krit_voltage)], func1(Time[:Time.index(krit_voltage)]), Deep[:len(Time[:Time.index(krit_voltage)], func1(Time[:Time.index(krit_voltage)]))], 1)#создаем коэффициенты
+func2 = np.poly1d(coefs1)#создает функцию по этим коэффициентам
+plt.plot(Time[Time.index(krit_voltage):Time.index(krit_voltage)+20], func2(Time[Time.index(krit_voltage):Time.index(krit_voltage)+20]), color = '#0d00ff')
 
 plt.grid(which='major')
 plt.grid(which='minor', linestyle=':')
 plt.tight_layout()
 plt.xlabel('t, c', fontsize=10, fontweight='bold')
 plt.ylabel('h, м', fontsize=10, fontweight='bold')
-
 plt.legend()
 plt.show()
 GPIO.cleanup()

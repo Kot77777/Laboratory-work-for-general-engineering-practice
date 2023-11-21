@@ -36,7 +36,7 @@ func = np.poly1d(coefs)#создает функцию по этим коэффи
 print("Коэффициенты:", func)
 
 
-plt.scatter(average_values_for_ADC, deep)
+plt.scatter(average_values_for_ADC, deep, c = '#0d00ff')
 plt.plot(average_values_for_ADC, func(average_values_for_ADC), label = "h = 124.3U -112.6", color = "red") #Написать в нахвание коэффициенты
 plt.minorticks_on()
 
