@@ -70,12 +70,14 @@ print("Критическое напряжение:", krit_voltage)# для ка
 plt.plot(Time, Deep, label = "h(t)", color = "red")
 plt.minorticks_on()
 
-coefs1 = np.polyfit(Time[:Time.index(krit_voltage)], Deep[:len(Time[:Time.index(krit_voltage)])], 1)#создаем коэффициенты
+c = np.where(Voltage ==  krit_voltage)[0][0]
+p = len(Voltage[:c])
+coefs1 = np.polyfit(Time[:p], Deep[:p], 1)#создаем коэффициенты
 func1 = np.poly1d(coefs1)#создает функцию по этим коэффициентам
-plt.plot(Time[:Time.index(krit_voltage)], func1(Time[:Time.index(krit_voltage)]), color = '#0d00ff')
-coefs2 = np.polyfit(Time[:Time.index(krit_voltage)], func1(Time[:Time.index(krit_voltage)]), Deep[:len(Time[:Time.index(krit_voltage)], func1(Time[:Time.index(krit_voltage)]))], 1)#создаем коэффициенты
+plt.plot(Time[:p], func1(Time[:p]), color = '#0d00ff')
+coefs2 = np.polyfit(Time[p: p+20], Deep[p: p+20], 1)#создаем коэффициенты
 func2 = np.poly1d(coefs1)#создает функцию по этим коэффициентам
-plt.plot(Time[Time.index(krit_voltage):Time.index(krit_voltage)+20], func2(Time[Time.index(krit_voltage):Time.index(krit_voltage)+20]), color = '#0d00ff')
+plt.plot(Time[p: p+20], func2(Time[p: p+20]), color = '#0d00ff')
 
 plt.grid(which='major')
 plt.grid(which='minor', linestyle=':')

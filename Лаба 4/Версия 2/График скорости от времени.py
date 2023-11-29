@@ -25,7 +25,7 @@ plt.minorticks_on()
 
 plt.grid(which='major')
 plt.grid(which='minor', linestyle=':')
-plt.tight_layout()
+
 plt.xlabel('ln(h), мм', fontsize=10, fontweight='bold')
 plt.ylabel('ln(c), мм/c', fontsize=10, fontweight='bold')
 

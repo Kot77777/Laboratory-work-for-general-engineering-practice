@@ -28,8 +28,6 @@ average_values_for_ADC = np.array([sum(values_ADC_for_20mm_kalib)/len(values_ADC
 
 deep = np.array([20, 40, 60, 80, 100, 120])
 
-sr_znach_ADC = sum(values_ADC_for_20mm_kalib**2)/5
-sr_znach_deep = sum(deep**2)/5
 
 coefs = np.polyfit(average_values_for_ADC, deep, 1)#создаем коэффициенты
 func = np.poly1d(coefs)#создает функцию по этим коэффициентам

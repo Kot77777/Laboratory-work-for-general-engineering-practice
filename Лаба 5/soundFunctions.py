@@ -134,7 +134,7 @@ def grafics(x, y1_low_start, y2_low_start, count):
     y1 = []
     y2 = []
     x1 = []
-    for i in range(len(x)-2):
+    for i in range(len(x)-3):
         y1.append(y1_low_start[i])
         y2.append(y2_low_start[i])
         x1.append(x[i])
