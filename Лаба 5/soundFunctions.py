@@ -147,24 +147,24 @@ def grafics(x, y1_low_start, y2_low_start, count):
     plt.legend()
     fig1 = plt.gcf()
     plt.show()
-    if (count == 0):
-        fig1.savefig('graf1.png', dpi=600)
-    if (count == 1):
-        fig1.savefig('graf2.png', dpi=600)
-    if (count == 2):
-        fig1.savefig('graf3.png', dpi=600)
-    if (count == 3):
-        fig1.savefig('graf1_sluch2.png', dpi=600)
-    if (count == 4):
-        fig1.savefig('graf2_sluch2.png', dpi=600)
-    if (count == 5):
-        fig1.savefig('graf3_sluch2.png', dpi=600)
-    if (count == 6):
-        fig1.savefig('graf1_new.png', dpi=600)
-    if (count == 7):
-        fig1.savefig('graf2_new.png', dpi=600)
-    if (count == 8):
-        fig1.savefig('graf3_new.png', dpi=600)
+    # if (count == 0):
+    #     fig1.savefig('graf1.png', dpi=600)
+    # if (count == 1):
+    #     fig1.savefig('graf2.png', dpi=600)
+    # if (count == 2):
+    #     fig1.savefig('graf3.png', dpi=600)
+    # if (count == 3):
+    #     fig1.savefig('graf1_sluch2.png', dpi=600)
+    # if (count == 4):
+    #     fig1.savefig('graf2_sluch2.png', dpi=600)
+    # if (count == 5):
+    #     fig1.savefig('graf3_sluch2.png', dpi=600)
+    # if (count == 6):
+    #     fig1.savefig('graf1_new.png', dpi=600)
+    # if (count == 7):
+    #     fig1.savefig('graf2_new.png', dpi=600)
+    # if (count == 8):
+    #     fig1.savefig('graf3_new.png', dpi=600)
     count += 1
     return count
 
