@@ -55,7 +55,7 @@ def analytics():  # построение аналитического графи
         return a * x ** 2 + b * x + c
 
     popt, pcov = curve_fit(foo, x, y)
-
+    print(popt)
     plt.plot(x, foo(x, *popt), color='orange', label="Аналитическая функция", linestyle='-')
 
     plt.xlabel('Концентрация углекислого газа')
@@ -144,7 +144,7 @@ fig4.savefig('air_smechenie.png', dpi=600)
 
 t = difference_max/max_speed_hz
 v = distanse/t
-print(v)
+print("Скорость звука в воздухе:", v)
 ########################################################################################################################
 data0_c = np.loadtxt('data_2_2.txt', dtype=int)  # время 2-ой фиксации хлопка
 data1_c = np.loadtxt('data_3_2.txt', dtype=int)  # время 1-ой фиксации хлопка
@@ -222,7 +222,7 @@ fig4_c.savefig('c_smechenie.png', dpi=600)
 
 t_c = difference_max_c/max_speed_hz
 v_c = distanse/t_c
-print(v_c)
+print("Скорость звука в углекислом газе:", v_c)
 
 analytics()
 
