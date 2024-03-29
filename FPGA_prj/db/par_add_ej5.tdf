@@ -1,0 +1,47 @@
+--parallel_add DEVICE_FAMILY="MAX 10" SIZE=2 WIDTH=8 WIDTHR=8 data
+--VERSION_BEGIN 22.1 cbx_cycloneii 2022:10:25:15:36:38:SC cbx_lpm_add_sub 2022:10:25:15:36:38:SC cbx_mgl 2022:10:25:15:36:55:SC cbx_nadder 2022:10:25:15:36:38:SC cbx_padd 2022:10:25:15:36:38:SC cbx_parallel_add 2022:10:25:15:36:38:SC cbx_stratix 2022:10:25:15:36:38:SC cbx_stratixii 2022:10:25:15:36:38:SC cbx_util_mgl 2022:10:25:15:36:38:SC  VERSION_END
+
+
+-- Copyright (C) 2022  Intel Corporation. All rights reserved.
+--  Your use of Intel Corporation's design tools, logic functions 
+--  and other software and tools, and any partner logic 
+--  functions, and any output files from any of the foregoing 
+--  (including device programming or simulation files), and any 
+--  associated documentation or information are expressly subject 
+--  to the terms and conditions of the Intel Program License 
+--  Subscription Agreement, the Intel Quartus Prime License Agreement,
+--  the Intel FPGA IP License Agreement, or other applicable license
+--  agreement, including, without limitation, that your use is for
+--  the sole purpose of programming logic devices manufactured by
+--  Intel and sold by Intel or its authorized distributors.  Please
+--  refer to the applicable agreement for further details, at
+--  https://fpgasoftware.intel.com/eula.
+
+
+FUNCTION soft (in)
+RETURNS ( out);
+
+--synthesis_resources = lut 9 
+SUBDESIGN par_add_ej5
+( 
+	data[15..0]	:	input;
+	result[7..0]	:	output;
+) 
+VARIABLE
+	add1_result[8..0]	:	WIRE;
+	sft2a[8..0] : soft;
+	sft3a[8..0] : soft;
+	sft4a[8..0] : soft;
+	w44w	: WIRE;
+	w56w[8..0]	: WIRE;
+
+BEGIN 
+	add1_result[] = sft2a[].out + sft3a[].out;
+	sft2a[].in = ( w44w, ( data[7..7], ( data[6..6], ( data[5..5], ( data[4..4], ( data[3..3], ( data[2..2], ( data[1..0]))))))));
+	sft3a[].in = ( w44w, ( data[15..15], ( data[14..14], ( data[13..13], ( data[12..12], ( data[11..11], ( data[10..10], ( data[9..8]))))))));
+	sft4a[].in = add1_result[];
+	result[7..0] = w56w[7..0];
+	w44w = B"0";
+	w56w[] = ( sft4a[8..7].out, sft4a[6..5].out, sft4a[4..3].out, sft4a[2..1].out, sft4a[0..0].out);
+END;
+--VALID FILE
